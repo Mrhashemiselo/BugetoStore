@@ -1,7 +1,17 @@
+using BugetoStore.Application.Interfaces.Contexts;
+using BugetoStore.Persistence.Contexts;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+var connection = builder.Configuration.GetConnectionString("DefaultConn");
+builder.Services.AddEntityFrameworkSqlServer().AddDbContext<DataBaseContext>(option =>
+    option.UseSqlServer(connection));
+
+builder.Services.AddScoped<IDataBaseContext,DataBaseContext>();
 
 var app = builder.Build();
 
